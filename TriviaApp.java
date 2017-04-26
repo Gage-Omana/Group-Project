@@ -128,7 +128,9 @@ public class TriviaApp extends JFrame {
 	static List<Player> moviesScores = new ArrayList<> ();
 	static List<Player> tvScores = new ArrayList<> ();
 	static List<Player> videoGamesScores = new ArrayList<> ();
+	static List<Player> hackedPlayers = new ArrayList<>();
 	private static ArrayList<Player> players = new ArrayList<>();
+	
 	/**
 	 * Launch the application.
 	 */
@@ -218,15 +220,18 @@ public class TriviaApp extends JFrame {
 		PrintWriter pw = null;
 
 		try {
-			fw = new FileWriter("HighScores.csv", true);
+			fw = new FileWriter("src\\triviaGame\\HighScores.csv", true);
 			bw = new BufferedWriter(fw);
 			pw = new PrintWriter(bw);
 
-			pw.println(player.toString());
+			hackedPlayers.add(player);
+			pw.print(player.toString());
 		} catch (IOException e) {
 			System.out.println("File Could Not Be Found");
 		} finally {
 			pw.close();
+			
+			
 		}
 	}
 
@@ -462,9 +467,10 @@ public class TriviaApp extends JFrame {
 		pnlQuestionCenter = new JPanel();
 		pnlQuestionCenter.setBorder(new EmptyBorder(50, 10, 50, 10));
 		pnlQuestionCenter.setLayout(new GridLayout(2, 2, 20, 20));
+		
 		Random rand = new Random();
-		int caseNum = rand.nextInt(3);
-
+		int caseNum = rand.nextInt(4);
+		
 		switch (caseNum) {
 		case 0:
 			createBtnQuestionAnswer(btnAnswer1, getAnswersofTheQuestion());
@@ -474,21 +480,21 @@ public class TriviaApp extends JFrame {
 			break;
 		case 1:
 			createBtnQuestionAnswer(btnAnswer1, getFalse3());
-			createBtnQuestionAnswer(btnAnswer2, getFalse1());
-			createBtnQuestionAnswer(btnAnswer3, getFalse2());
-			createBtnQuestionAnswer(btnAnswer4, getAnswersofTheQuestion());
+			createBtnQuestionAnswer(btnAnswer2, getAnswersofTheQuestion());
+			createBtnQuestionAnswer(btnAnswer3, getFalse1());
+			createBtnQuestionAnswer(btnAnswer4, getFalse2());
 			break;
 		case 2:
 			createBtnQuestionAnswer(btnAnswer1, getFalse2());
-			createBtnQuestionAnswer(btnAnswer3, getFalse3());
-			createBtnQuestionAnswer(btnAnswer2, getAnswersofTheQuestion());
+			createBtnQuestionAnswer(btnAnswer2, getFalse3());
+			createBtnQuestionAnswer(btnAnswer3, getAnswersofTheQuestion());
 			createBtnQuestionAnswer(btnAnswer4, getFalse1());
 			break;
 		case 3:
-			createBtnQuestionAnswer(btnAnswer3, getFalse1());
-			createBtnQuestionAnswer(btnAnswer2, getAnswersofTheQuestion());
-			createBtnQuestionAnswer(btnAnswer4, getFalse2());
-			createBtnQuestionAnswer(btnAnswer1, getFalse3());
+			createBtnQuestionAnswer(btnAnswer1, getFalse1());
+			createBtnQuestionAnswer(btnAnswer2, getFalse2());
+			createBtnQuestionAnswer(btnAnswer3, getFalse3());
+			createBtnQuestionAnswer(btnAnswer4, getAnswersofTheQuestion());
 			break;
 		default:
 			// do nothing
@@ -914,7 +920,7 @@ public class TriviaApp extends JFrame {
 	 */
 	public static void initializeScores() {
 		players.clear();
-		try(Scanner reader = new Scanner(TriviaApp.class.getResourceAsStream("HighScores.txt"))){
+		try(Scanner reader = new Scanner(TriviaApp.class.getResourceAsStream("HighScores.csv"))){
 			while (reader.hasNext()) {
 				Player player = getPlayer(reader.nextLine());
 				if (player != null){
@@ -922,6 +928,9 @@ public class TriviaApp extends JFrame {
 				}
 			} 
 		} 
+		for(Player p : hackedPlayers){
+			players.add(p);
+		}
 		sportsScores.clear();
 		moviesScores.clear();
 		videoGamesScores.clear();
