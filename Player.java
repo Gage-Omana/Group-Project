@@ -28,7 +28,7 @@ private String category;
 
 	@Override
 	public String toString() {
-		return String.format("%s,%d,%s", getPlayerName(), getScores(), getCategory());
+		return String.format("%s,%d,%s\n", getPlayerName(), getScores(), getCategory());
 	}
 
 	@Override
